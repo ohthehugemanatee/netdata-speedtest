@@ -6,10 +6,8 @@ speedtest_update_every=60
 speedtest_priority=100
 
 speedtest_check() {
-  if command -v speedtest-cli 2>/dev/null; then
-    return 0
-  fi
-  return 1
+  require_cmd speedtest-cli || return 1
+  return 0
 }
 
 
