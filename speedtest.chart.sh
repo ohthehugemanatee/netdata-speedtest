@@ -1,12 +1,12 @@
 #!/bin/bash
 
 # Netdata charts.d collector for fast.com internet speed test.
-# Requires installed fast.com cli: `npm install --global fast-cli`.
+# Requires installed speedtest.com cli: `pip install speedtest-cli`
 speedtest_update_every=5
 speedtest_priority=100
 
 function speedtest_check {
-	require_cmd fast || return 1
+	require_cmd speedtest-cli || return 1
   return 0
 }
 
@@ -15,8 +15,8 @@ speedtest_create() {
 	# create a chart with 2 dimensions
 	cat <<EOF
 CHART system.connectionspeed '' "System Connection Speed" "Mbps" connectionspeed system.connectionspeed line $((speedtest_priority + 1)) $speedtest_update_every
-DIMENSION down 'Down' absolute
-DIMENSION up 'Up' absolute
+DIMENSION down 'Down' absolute 10000000
+DIMENSION up 'Up' absolute 1 10000000
 EOF
 
 	return 0
@@ -27,9 +27,9 @@ speedtest_update() {
 	# for each dimension
 	# remember: KEEP IT SIMPLE AND SHORT
   # Get the up and down speed. Parse them into separate values, and drop the Mbps.
-	fast_output=$(fast -u)
-	down=$(echo $fast_output | cut -d $'\n' -f 1 | cut -d ' ' -f 1)
-	up=$(echo $fast_output | cut -d $'\n' -f 2 | cut -d ' ' -f 1)
+  speedtest_output=$(speedtest-cli --single --csv)
+  down=$(echo $speedtest_output | cut -d ',' -f 7 | cut -d '.' -f 1)
+  up=$(echo $speedtest_output | cut -d ',' -f 8 | cut -d '.' -f 1)
 
 	# write the result of the work.
 	cat <<VALUESEOF
