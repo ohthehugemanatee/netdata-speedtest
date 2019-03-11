@@ -14,7 +14,7 @@ speedtest_check() {
 speedtest_create() {
 	# create a chart with 2 dimensions
 	cat <<EOF
-CHART system.connectionspeed '' "System Connection Speed" "Mbps" "Connection Speed" system.connectionspeed line $((speedtest_priority + 1)) $speedtest_update_every
+CHART system.connectionspeed '' "System Connection Speed" "Mbps" "connection speed" system.connectionspeed line $((speedtest_priority + 1)) $speedtest_update_every
 DIMENSION down 'Down' absolute 1 1000000
 DIMENSION up 'Up' absolute 1 1000000
 EOF
