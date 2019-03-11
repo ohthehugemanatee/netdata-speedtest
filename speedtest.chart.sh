@@ -2,12 +2,14 @@
 
 # Netdata charts.d collector for fast.com internet speed test.
 # Requires installed speedtest.com cli: `pip install speedtest-cli`
-speedtest_update_every=5
+speedtest_update_every=60
 speedtest_priority=100
 
-function speedtest_check {
-	require_cmd speedtest-cli || return 1
-  return 0
+speedtest_check() {
+  if command -v speedtest-cli 2>/dev/null; then
+    return 0
+  fi
+  return 1
 }
 
 
@@ -15,7 +17,7 @@ speedtest_create() {
 	# create a chart with 2 dimensions
 	cat <<EOF
 CHART system.connectionspeed '' "System Connection Speed" "Mbps" connectionspeed system.connectionspeed line $((speedtest_priority + 1)) $speedtest_update_every
-DIMENSION down 'Down' absolute 10000000
+DIMENSION down 'Down' absolute 1 10000000
 DIMENSION up 'Up' absolute 1 10000000
 EOF
 
