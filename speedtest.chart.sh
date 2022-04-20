@@ -12,32 +12,32 @@ speedtest_check() {
 
 
 speedtest_create() {
-        # create a chart with 2 dimensions
-        cat <<EOF
+	# create a chart with 2 dimensions
+	cat <<EOF
 CHART system.connectionspeed '' "System Connection Speed" "Mbps" "connection speed" system.connectionspeed line $((speedtest_priority + 1)) $speedtest_update_every
 DIMENSION down 'Down' absolute 1 1000000
 DIMENSION up 'Up' absolute 1 1000000
 EOF
 
-        return 0
+	return 0
 }
 
 speedtest_update() {
-        # do all the work to collect / calculate the values
-        # for each dimension
-        # remember: KEEP IT SIMPLE AND SHORT
+	# do all the work to collect / calculate the values
+	# for each dimension
+	# remember: KEEP IT SIMPLE AND SHORT
   # Get the up and down speed. Parse them into separate values, and drop the Mbps.
   speedtest_output=$(speedtest-cli --single --json)
   down=$(echo $speedtest_output | jq '.download')
   up=$(echo $speedtest_output | jq '.upload')
 
-        # write the result of the work.
-        cat <<VALUESEOF
+	# write the result of the work.
+	cat <<VALUESEOF
 BEGIN system.connectionspeed
 SET down = $down
 SET up = $up
 END
 VALUESEOF
 
-        return 0
+	return 0
 }
