@@ -5,7 +5,13 @@ Just drop the script file into `/usr/libexec/netdata/charts.d/`, and Netdata wil
 
 ## Installation
 
-This plugin requires the [speedtest-cli](https://github.com/sivel/speedtest-cli) python project. Install with `pip install speedtest-cli`.
+* This plugin requires the [speedtest-cli](https://github.com/sivel/speedtest-cli) python project. Install with `pip install speedtest-cli`.
+
+* Also required is the package [jq](https://stedolan.github.io/jq/). Easily installed from EPEL on Centos, or from the default Ubuntu package repositories.
+
+    Centos: `sudo yum install epel-release -y && yum install jq -y`
+
+    Ubuntu: `sudo apt update && apt install jq -y`
 
 ## Configuration
 
