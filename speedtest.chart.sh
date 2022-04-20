@@ -27,9 +27,9 @@ speedtest_update() {
 	# for each dimension
 	# remember: KEEP IT SIMPLE AND SHORT
   # Get the up and down speed. Parse them into separate values, and drop the Mbps.
-  speedtest_output=$(speedtest-cli --single --csv)
-  down=$(echo $speedtest_output | cut -d ',' -f 7 | cut -d '.' -f 1)
-  up=$(echo $speedtest_output | cut -d ',' -f 8 | cut -d '.' -f 1)
+  speedtest_output=$(speedtest-cli --single --json)
+  down=$(echo $speedtest_output | jq '.download')
+  up=$(echo $speedtest_output | jq '.upload')
 
 	# write the result of the work.
 	cat <<VALUESEOF
